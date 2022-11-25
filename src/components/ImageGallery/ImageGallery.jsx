@@ -2,7 +2,8 @@ import { Component } from 'react';
 import { ImageGalleryItem } from 'components/ImageGalleryItem/ImageGalleryItem';
 import { Box } from 'components/Box/Box';
 import { Modal } from 'components/Modal/Modal';
-import { GalleryViewer } from 'components/GalleryWiewer/GalleryWiewer';
+import { GalleryViewer } from 'components/GalleryViewer/GalleryViewer';
+import { LoadMoreBtn } from './ImageGallery.styled';
 
 export class ImageGallery extends Component {
   state = { modalShow: false, currentId: '' };
@@ -16,7 +17,13 @@ export class ImageGallery extends Component {
   render() {
     return (
       <>
-        <Box display="flex" flexWrap="wrap" as="ul" gridGap={16}>
+        <Box
+          display="flex"
+          flexWrap="wrap"
+          justifyContent="center"
+          as="ul"
+          gridGap={16}
+        >
           <ImageGalleryItem
             onItemClick={this.onItemClick}
             images={this.props.images}
@@ -24,9 +31,9 @@ export class ImageGallery extends Component {
         </Box>
 
         {this.props.images.length > 0 && (
-          <button type="button" onClick={this.props.onkBtnClick}>
-            More Photo
-          </button>
+          <LoadMoreBtn type="button" onClick={this.props.onkBtnClick}>
+            Load more
+          </LoadMoreBtn>
         )}
         {this.state.modalShow && (
           <Modal onClose={this.closeModal}>

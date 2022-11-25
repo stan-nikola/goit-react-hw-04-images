@@ -1,5 +1,6 @@
 import { Component } from 'react';
-
+import { Header, Form, SearchInput, SearchButton } from './Searchbar.styled';
+import { BiSearchAlt2 } from 'react-icons/bi';
 export class Searchbar extends Component {
   state = {
     query: '',
@@ -17,13 +18,13 @@ export class Searchbar extends Component {
 
   render() {
     return (
-      <header className="searchbar">
-        <form onSubmit={this.handleSubmit} values={this.state.query}>
-          <button type="submit" className="button">
-            <span className="button-label">Search</span>
-          </button>
+      <Header className="searchbar">
+        <Form onSubmit={this.handleSubmit} values={this.state.query}>
+          <SearchButton type="submit" className="button">
+            <BiSearchAlt2 />
+          </SearchButton>
 
-          <input
+          <SearchInput
             onChange={this.handleChange}
             value={this.state.query}
             type="text"
@@ -31,8 +32,8 @@ export class Searchbar extends Component {
             autoFocus
             placeholder="Search images and photos"
           />
-        </form>
-      </header>
+        </Form>
+      </Header>
     );
   }
 }
