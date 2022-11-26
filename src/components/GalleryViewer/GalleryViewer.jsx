@@ -2,7 +2,7 @@ import { Component } from 'react';
 import { RotateLoader } from 'react-spinners';
 import { fetchImagesById } from 'services/pixabay-api';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { Box } from 'components/Box/Box';
+
 import {
   ViewerImg,
   ViewerImgPosition,
