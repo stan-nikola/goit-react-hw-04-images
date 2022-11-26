@@ -1,4 +1,4 @@
-import { BounceLoader } from 'react-spinners';
+import { PropagateLoader } from 'react-spinners';
 import { Component } from 'react';
 import { Searchbar } from '../components/Searchbar/Searchbar';
 import { ImageGallery } from '../components/ImageGallery/ImageGallery';
@@ -75,7 +75,7 @@ export class App extends Component {
           onkBtnClick={this.loadMore}
           onkBtnUpClick={this.returnToTop}
         />
-        <BounceLoader
+        <PropagateLoader
           cssOverride={override}
           size={20}
           color={'#36d7b7'}

@@ -1,21 +1,14 @@
 import { Component } from 'react';
-import { RotateLoader } from 'react-spinners';
+import { PuffLoader } from 'react-spinners';
 import { fetchImagesById } from 'services/pixabay-api';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-
+import { override } from 'constants/loading-settings';
 import {
   ViewerImg,
   ViewerImgPosition,
   NextViewerBtn,
   PrevViewerBtn,
 } from './GalleryViewer.styled';
-
-const override = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-};
 
 export class GalleryViewer extends Component {
   state = {
@@ -34,7 +27,7 @@ export class GalleryViewer extends Component {
     try {
       this.setState({ loading: true });
       const image = await fetchImagesById(this.state.currentId);
-      console.log(image.hits[0]);
+
       this.setState({
         currentImage: image.hits[0].largeImageURL,
         loading: false,
@@ -49,12 +42,12 @@ export class GalleryViewer extends Component {
     this.setState({
       loading: true,
       currentIdx: this.state.currentIdx + value,
+      currentImage: '',
     });
 
     const idxImageId = this.props.imagesArray[this.state.currentIdx + value];
     try {
       const image = await fetchImagesById(idxImageId.id);
-      console.log(image);
 
       this.setState({
         currentImage: image.hits[0].largeImageURL,
@@ -76,7 +69,7 @@ export class GalleryViewer extends Component {
           <ViewerImgPosition>
             {this.state.currentIdx + 1}/{this.props.imagesArray.length}
           </ViewerImgPosition>
-          <ViewerImg src={this.state.currentImage} alt="" />
+          <ViewerImg src={this.state.currentImage} alt="image" />
           <NextViewerBtn
             type="button"
             onClick={() => this.nextImage(+1)}
@@ -95,9 +88,9 @@ export class GalleryViewer extends Component {
           </PrevViewerBtn>
         </>
 
-        <RotateLoader
+        <PuffLoader
           cssOverride={override}
-          size={20}
+          size={60}
           color={'#36d7b7'}
           loading={this.state.loading}
           speedMultiplier={1.5}
