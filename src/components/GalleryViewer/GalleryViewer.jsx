@@ -1,6 +1,14 @@
 import { Component } from 'react';
 import { RotateLoader } from 'react-spinners';
 import { fetchImagesById } from 'services/pixabay-api';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { Box } from 'components/Box/Box';
+import {
+  ViewerImg,
+  ViewerImgPosition,
+  NextViewerBtn,
+  PrevViewerBtn,
+} from './GalleryViewer.styled';
 
 const override = {
   position: 'absolute',
@@ -43,9 +51,7 @@ export class GalleryViewer extends Component {
       currentIdx: this.state.currentIdx + value,
     });
 
-    console.log(this.state.currentIdx);
     const idxImageId = this.props.imagesArray[this.state.currentIdx + value];
-    console.log(idxImageId);
     try {
       const image = await fetchImagesById(idxImageId.id);
       console.log(image);
@@ -66,28 +72,28 @@ export class GalleryViewer extends Component {
   render() {
     return (
       <>
-        <div>
-          <p>
-            {this.state.currentIdx}/{this.props.imagesArray.length}
-          </p>
-          <img src={this.state.currentImage} width={300} alt="" />
-          <button
+        <>
+          <ViewerImgPosition>
+            {this.state.currentIdx + 1}/{this.props.imagesArray.length}
+          </ViewerImgPosition>
+          <ViewerImg src={this.state.currentImage} alt="" />
+          <NextViewerBtn
             type="button"
             onClick={() => this.nextImage(+1)}
             disabled={
               this.state.currentIdx + 1 >= this.props.imagesArray.length
             }
           >
-            Next
-          </button>
-          <button
+            <FiChevronRight />
+          </NextViewerBtn>
+          <PrevViewerBtn
             type="button"
             onClick={() => this.nextImage(-1)}
             disabled={this.state.currentIdx < 1}
           >
-            Prev
-          </button>
-        </div>
+            <FiChevronLeft />
+          </PrevViewerBtn>
+        </>
 
         <RotateLoader
           cssOverride={override}

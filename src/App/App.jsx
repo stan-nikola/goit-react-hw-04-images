@@ -1,15 +1,11 @@
-import { PropagateLoader } from 'react-spinners';
+import { BounceLoader } from 'react-spinners';
 import { Component } from 'react';
 import { Searchbar } from '../components/Searchbar/Searchbar';
 import { ImageGallery } from '../components/ImageGallery/ImageGallery';
 import { fetchImages } from 'services/pixabay-api';
+import { override } from 'constants/loading-settings';
 
-const override = {
-  position: 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-};
+const scrollTarget = document.getElementById('modal-root');
 
 export class App extends Component {
   state = {
@@ -36,6 +32,14 @@ export class App extends Component {
           images: [...state.images, ...images.hits],
           loading: false,
         }));
+        if (this.state.loading) {
+          setTimeout(() => {
+            scrollTarget.scrollIntoView({
+              block: 'center',
+              behavior: 'smooth',
+            });
+          }, 100);
+        }
       } catch (error) {
         this.setState({ loading: false });
         alert(error);
@@ -53,14 +57,25 @@ export class App extends Component {
   loadMore = () => {
     this.setState(prevState => ({ page: prevState.page + 1, loading: true }));
   };
+  returnToTop = () => {
+    window.scrollTo({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  };
 
   render() {
     return (
       <>
         <Searchbar onSubmit={this.handleSubmit} />
 
-        <ImageGallery images={this.state.images} onkBtnClick={this.loadMore} />
-        <PropagateLoader
+        <ImageGallery
+          images={this.state.images}
+          onkBtnClick={this.loadMore}
+          onkBtnUpClick={this.returnToTop}
+        />
+        <BounceLoader
           cssOverride={override}
           size={20}
           color={'#36d7b7'}
