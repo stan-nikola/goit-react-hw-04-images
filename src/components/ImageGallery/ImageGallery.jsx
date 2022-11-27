@@ -19,6 +19,8 @@ export class ImageGallery extends Component {
     this.setState({ modalShow: false });
   };
   render() {
+    const { images, onBtnClick, onBtnUpClick } = this.props;
+    const { modalShow, currentId } = this.state;
     return (
       <>
         <Box
@@ -31,28 +33,28 @@ export class ImageGallery extends Component {
         >
           <ImageGalleryItem
             onItemClick={this.onItemClick}
-            images={this.props.images}
+            images={images}
           ></ImageGalleryItem>
         </Box>
         <Box display="flex" justifyContent="center" mb={4} id="scrollTarget-js">
-          {this.props.images.length > 0 && (
-            <LoadMoreBtn type="button" onClick={this.props.onkBtnClick}>
+          {images.length > 0 && (
+            <LoadMoreBtn type="button" onClick={onBtnClick}>
               <BsFillArrowDownCircleFill /> Load more
             </LoadMoreBtn>
           )}
-          {this.props.images.length > 13 && (
-            <UpBtn type="button" onClick={this.props.onkBtnUpClick}>
+          {images.length > 13 && (
+            <UpBtn type="button" onClick={onBtnUpClick}>
               Return to top
               <BsFillArrowUpCircleFill />
             </UpBtn>
           )}
         </Box>
 
-        {this.state.modalShow && (
+        {modalShow && (
           <Modal onClose={this.closeModal}>
             <GalleryViewer
-              currentId={this.state.currentId}
-              imagesArray={this.props.images}
+              currentId={currentId}
+              imagesArray={images}
             ></GalleryViewer>
           </Modal>
         )}

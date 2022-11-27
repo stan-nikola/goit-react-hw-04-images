@@ -1,5 +1,7 @@
 import { PropagateLoader } from 'react-spinners';
 import { Component } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { Searchbar } from '../components/Searchbar/Searchbar';
 import { ImageGallery } from '../components/ImageGallery/ImageGallery';
 import { fetchImages } from 'services/pixabay-api';
@@ -14,16 +16,13 @@ export class App extends Component {
     images: [],
     loading: false,
   };
+
   async componentDidUpdate(_, prevState) {
-    if (prevState.query !== this.state.query) {
+    const { query, page, loading } = this.state;
+    if (prevState.query !== query) {
       this.setState({ images: [] });
     }
-    if (
-      prevState.query !== this.state.query ||
-      this.state.page > prevState.page
-    ) {
-      const { query, page } = this.state;
-
+    if (prevState.query !== query || page > prevState.page) {
       try {
         this.setState({ loading: true });
         const images = await fetchImages(query.trim(), page);
@@ -32,7 +31,7 @@ export class App extends Component {
           images: [...state.images, ...images.hits],
           loading: false,
         }));
-        if (this.state.loading) {
+        if (loading) {
           setTimeout(() => {
             scrollTarget.scrollIntoView({
               block: 'center',
@@ -41,14 +40,14 @@ export class App extends Component {
           }, 100);
         }
       } catch (error) {
+        toast.warn(`${error}`);
         this.setState({ loading: false });
-        alert(error);
       }
     }
   }
   handleSubmit = query => {
     if (query.trim() === '') {
-      alert('Enter search query');
+      toast.warn('Enter search query');
       return;
     }
 
@@ -72,8 +71,8 @@ export class App extends Component {
 
         <ImageGallery
           images={this.state.images}
-          onkBtnClick={this.loadMore}
-          onkBtnUpClick={this.returnToTop}
+          onBtnClick={this.loadMore}
+          onBtnUpClick={this.returnToTop}
         />
         <PropagateLoader
           cssOverride={override}
@@ -84,6 +83,7 @@ export class App extends Component {
           aria-label="Loading Spinner"
           data-testid="loader"
         />
+        <ToastContainer />
       </>
     );
   }

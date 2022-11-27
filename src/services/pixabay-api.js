@@ -14,7 +14,6 @@ export const fetchImages = async (query, page) => {
   );
   if (response.data.total === 0) {
     throw new Error(`No Picture with name ${query}`);
-    // return Promise.reject(new Error(`No Picture with name ${query}`));
   }
   return response.data;
 };

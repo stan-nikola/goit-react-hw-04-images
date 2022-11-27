@@ -2,6 +2,8 @@ import { Component } from 'react';
 import { PuffLoader } from 'react-spinners';
 import { fetchImagesById } from 'services/pixabay-api';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import { override } from 'constants/loading-settings';
 import {
   ViewerImg,
@@ -19,14 +21,14 @@ export class GalleryViewer extends Component {
   };
 
   async componentDidMount() {
+    const { currentId } = this.state;
     const { imagesArray } = this.props;
-    const index = imagesArray.findIndex(
-      el => el.id === Number(this.state.currentId)
-    );
+
+    const index = imagesArray.findIndex(el => el.id === Number(currentId));
 
     try {
       this.setState({ loading: true });
-      const image = await fetchImagesById(this.state.currentId);
+      const image = await fetchImagesById(currentId);
 
       this.setState({
         currentImage: image.hits[0].largeImageURL,
@@ -34,18 +36,21 @@ export class GalleryViewer extends Component {
         currentIdx: index,
       });
     } catch (error) {
-      alert(error);
+      toast(`${error}`);
     }
   }
 
   nextImage = async value => {
+    const { imagesArray } = this.props;
+    const { currentIdx } = this.state;
+
     this.setState({
       loading: true,
-      currentIdx: this.state.currentIdx + value,
+      currentIdx: currentIdx + value,
       currentImage: '',
     });
 
-    const idxImageId = this.props.imagesArray[this.state.currentIdx + value];
+    const idxImageId = imagesArray[currentIdx + value];
     try {
       const image = await fetchImagesById(idxImageId.id);
 
@@ -54,7 +59,7 @@ export class GalleryViewer extends Component {
         loading: false,
       });
     } catch (error) {
-      alert(error);
+      toast.warn(error);
     }
 
     this.setState({
@@ -63,26 +68,28 @@ export class GalleryViewer extends Component {
   };
 
   render() {
+    const { imagesArray } = this.props;
+    const { currentIdx, currentImage, loading } = this.state;
     return (
       <>
         <>
           <ViewerImgPosition>
-            {this.state.currentIdx + 1}/{this.props.imagesArray.length}
+            {currentIdx + 1}/{imagesArray.length}
           </ViewerImgPosition>
-          <ViewerImg src={this.state.currentImage} alt="image" />
+          <ViewerImg src={currentImage} alt="image" />
           <NextViewerBtn
             type="button"
+            aria-label="NextViewerBtn"
             onClick={() => this.nextImage(+1)}
-            disabled={
-              this.state.currentIdx + 1 >= this.props.imagesArray.length
-            }
+            disabled={currentIdx + 1 >= imagesArray.length}
           >
             <FiChevronRight />
           </NextViewerBtn>
           <PrevViewerBtn
             type="button"
+            aria-label="PrevViewerBtn"
             onClick={() => this.nextImage(-1)}
-            disabled={this.state.currentIdx < 1}
+            disabled={currentIdx < 1}
           >
             <FiChevronLeft />
           </PrevViewerBtn>
@@ -92,11 +99,12 @@ export class GalleryViewer extends Component {
           cssOverride={override}
           size={60}
           color={'#36d7b7'}
-          loading={this.state.loading}
+          loading={loading}
           speedMultiplier={1.5}
           aria-label="Loading Spinner"
           data-testid="loader"
         />
+        <ToastContainer />
       </>
     );
   }
