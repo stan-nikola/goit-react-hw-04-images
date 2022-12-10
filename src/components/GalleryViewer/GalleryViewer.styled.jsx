@@ -6,7 +6,7 @@ export const ViewerImgPosition = styled.p`
   left: 67px;
   z-index: 999;
   font-size: 22px;
-
+  color: aqua;
   text-shadow: 0px 0px 20px #6affde;
 `;
 
@@ -21,7 +21,9 @@ export const ViewerImg = styled.img`
 
 export const NextViewerBtn = styled(ViewerBtn)`
   right: -42px;
+  border-radius: 0 4px 4px 0;
 `;
 export const PrevViewerBtn = styled(ViewerBtn)`
   left: -42px;
+  border-radius: 4px 0 0 4px;
 `;

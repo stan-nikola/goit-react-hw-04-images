@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { AiOutlineEye, AiOutlineLike, AiOutlineComment } from 'react-icons/ai';
 import { CardItem, CardImg, CardData } from './ImageGalleryItem.styled.';
 import { Box } from './../Box/Box';
@@ -22,4 +23,9 @@ export const ImageGalleryItem = ({ images, onItemClick }) => {
       </Box>
     </CardItem>
   ));
+};
+
+ImageGalleryItem.propTypes = {
+  images: PropTypes.array.isRequired,
+  onItemClick: PropTypes.func.isRequired,
 };

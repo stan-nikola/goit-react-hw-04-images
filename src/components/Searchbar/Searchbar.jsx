@@ -1,6 +1,8 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Header, Form, SearchInput, SearchButton } from './Searchbar.styled';
 import { BiSearchAlt2 } from 'react-icons/bi';
+
 export class Searchbar extends Component {
   state = {
     query: '',
@@ -37,3 +39,7 @@ export class Searchbar extends Component {
     );
   }
 }
+
+Searchbar.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};

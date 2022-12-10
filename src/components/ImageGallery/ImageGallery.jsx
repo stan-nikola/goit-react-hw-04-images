@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   BsFillArrowDownCircleFill,
   BsFillArrowUpCircleFill,
@@ -19,7 +20,7 @@ export class ImageGallery extends Component {
     this.setState({ modalShow: false });
   };
   render() {
-    const { images, onBtnClick, onBtnUpClick } = this.props;
+    const { totalHits, images, onBtnClick, onBtnUpClick } = this.props;
     const { modalShow, currentId } = this.state;
     return (
       <>
@@ -37,12 +38,12 @@ export class ImageGallery extends Component {
           ></ImageGalleryItem>
         </Box>
         <Box display="flex" justifyContent="center" mb={4} id="scrollTarget-js">
-          {images.length > 0 && (
+          {images.length < totalHits && images.length > 11 && (
             <LoadMoreBtn type="button" onClick={onBtnClick}>
               <BsFillArrowDownCircleFill /> Load more
             </LoadMoreBtn>
           )}
-          {images.length > 13 && (
+          {images.length > 6 && (
             <UpBtn type="button" onClick={onBtnUpClick}>
               Return to top
               <BsFillArrowUpCircleFill />
@@ -62,3 +63,10 @@ export class ImageGallery extends Component {
     );
   }
 }
+
+ImageGallery.propTypes = {
+  totalHits: PropTypes.number.isRequired,
+  images: PropTypes.array.isRequired,
+  onBtnClick: PropTypes.func.isRequired,
+  onBtnUpClick: PropTypes.func.isRequired,
+};

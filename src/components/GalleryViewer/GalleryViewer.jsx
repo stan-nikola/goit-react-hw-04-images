@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { PuffLoader } from 'react-spinners';
+import { PropTypes } from 'prop-types';
 import { fetchImagesById } from 'services/pixabay-api';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
@@ -47,11 +48,10 @@ export class GalleryViewer extends Component {
     this.setState({
       loading: true,
       currentIdx: currentIdx + value,
-      currentImage: '',
     });
 
-    const idxImageId = imagesArray[currentIdx + value];
     try {
+      const idxImageId = imagesArray[currentIdx + value];
       const image = await fetchImagesById(idxImageId.id);
 
       this.setState({
@@ -109,3 +109,5 @@ export class GalleryViewer extends Component {
     );
   }
 }
+
+GalleryViewer.propTypes = { imagesArray: PropTypes.array.isRequired };

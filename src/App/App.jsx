@@ -15,6 +15,7 @@ export class App extends Component {
     page: 1,
     images: [],
     loading: false,
+    totalHits: 0,
   };
 
   async componentDidUpdate(_, prevState) {
@@ -29,6 +30,7 @@ export class App extends Component {
 
         this.setState(state => ({
           images: [...state.images, ...images.hits],
+          totalHits: images.totalHits,
           loading: false,
         }));
         if (loading) {
@@ -71,6 +73,7 @@ export class App extends Component {
 
         <ImageGallery
           images={this.state.images}
+          totalHits={this.state.totalHits}
           onBtnClick={this.loadMore}
           onBtnUpClick={this.returnToTop}
         />

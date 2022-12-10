@@ -12,12 +12,20 @@ export const ViewerBtn = styled(Button)`
   background-color: transparent;
   transition: background-color 250ms linear;
   svg {
+    color: aqua;
     width: 30px;
     height: 30px;
   }
-
+  &:disabled {
+    svg {
+      color: grey;
+    }
+  }
   &:hover,
   &:focus {
     background-color: #00ffff52;
+    &:disabled {
+      background-color: #52525252;
+    }
   }
 `;
