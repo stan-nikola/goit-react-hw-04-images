@@ -16,7 +16,6 @@ import {
 export class GalleryViewer extends Component {
   state = {
     currentId: this.props.currentId,
-    currentImage: '',
     loading: false,
     currentIdx: 0,
   };
@@ -56,6 +55,7 @@ export class GalleryViewer extends Component {
 
       this.setState({
         currentImage: image.hits[0].largeImageURL,
+        currentImageAlt: image.hits[0].tags,
         loading: false,
       });
     } catch (error) {
@@ -69,14 +69,15 @@ export class GalleryViewer extends Component {
 
   render() {
     const { imagesArray } = this.props;
-    const { currentIdx, currentImage, loading } = this.state;
+    const { currentIdx, currentImage, currentImageAlt, loading } = this.state;
+
     return (
       <>
         <>
           <ViewerImgPosition>
             {currentIdx + 1}/{imagesArray.length}
           </ViewerImgPosition>
-          <ViewerImg src={currentImage} alt="image" />
+          <ViewerImg src={currentImage} alt={currentImageAlt} />
           <NextViewerBtn
             type="button"
             aria-label="NextViewerBtn"
