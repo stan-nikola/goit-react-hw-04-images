@@ -11,7 +11,6 @@ const scrollTarget = document.getElementById('modal-root');
 
 export class App extends Component {
   state = {
-    query: '',
     page: 1,
     images: [],
     loading: false,
@@ -20,13 +19,16 @@ export class App extends Component {
 
   async componentDidUpdate(_, prevState) {
     const { query, page, loading } = this.state;
-    if (prevState.query !== query) {
+
+    if (prevState.query && prevState.query !== query) {
       this.setState({ images: [] });
     }
+
     if (prevState.query !== query || page > prevState.page) {
       try {
         this.setState({ loading: true });
-        const images = await fetchImages(query.trim(), page);
+
+        const images = await fetchImages(query, page);
 
         this.setState(state => ({
           images: [...state.images, ...images.hits],
@@ -48,7 +50,7 @@ export class App extends Component {
     }
   }
   handleSubmit = query => {
-    if (query.trim() === '') {
+    if (query === '') {
       toast.warn('Enter search query');
       return;
     }

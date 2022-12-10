@@ -14,13 +14,13 @@ export class Searchbar extends Component {
 
   handleSubmit = e => {
     e.preventDefault();
-    this.props.onSubmit(this.state.query.toLowerCase());
+    this.props.onSubmit(this.state.query.toLowerCase().trim());
     this.setState({ query: '' });
   };
 
   render() {
     return (
-      <Header className="searchbar">
+      <Header>
         <Form onSubmit={this.handleSubmit} values={this.state.query}>
           <SearchButton type="submit" className="button">
             <BiSearchAlt2 />
