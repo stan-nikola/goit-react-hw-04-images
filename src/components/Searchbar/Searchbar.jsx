@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Header, Form, SearchInput, SearchButton } from './SearchBar.styled';
+
+import { Header, Form, SearchInput, SearchButton } from './Searchbar.styled';
 import { BiSearchAlt2 } from 'react-icons/bi';
 
 export function SearchBar({ onSubmit }) {
