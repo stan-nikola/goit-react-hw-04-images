@@ -1,7 +1,7 @@
 import { PropagateLoader } from 'react-spinners';
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { SearchBar } from 'components/SearchBar/SearchBar';
+import { Searchbar } from 'components/Searchbar/Searchbar';
 import { ImageGallery } from '../components/ImageGallery/ImageGallery';
 import { fetchImages } from 'services/pixabay-api';
 import { override } from 'constants/loading-settings';
@@ -70,7 +70,7 @@ export function App() {
 
   return (
     <>
-      <SearchBar onSubmit={handleSubmit} />
+      <Searchbar onSubmit={handleSubmit} />
 
       <ImageGallery
         images={images}
