@@ -20,14 +20,9 @@ export function App() {
       return;
     }
     (async () => {
-      setLoading(true);
-      const loadedImages = await fetchImages(query, page);
-      if (loadedImages.hits.length === 0) {
-        toast.warn(`Sorry, no matches found for ${query} search`);
-        setLoading(false);
-        return;
-      }
       try {
+        setLoading(true);
+        const loadedImages = await fetchImages(query, page);
         setImages(prevImages => [...prevImages, ...loadedImages.hits]);
         setTotalHits(loadedImages.totalHits);
         setLoading(false);

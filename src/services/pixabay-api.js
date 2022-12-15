@@ -12,8 +12,8 @@ export const fetchImages = async (query, page) => {
     `/?key=${API_KEY}&q=${query}&per_page=12&page=${page}&image_type=photo&orientation=horizontal`,
     config
   );
-  // if (response.data.total === 0) {
-  //   throw new Error(`No Picture with name ${query}`);
-  // }
+  if (response.data.total === 0) {
+    throw new Error(`Sorry, we didn't find the ${query} for your request`);
+  }
   return response.data;
 };
