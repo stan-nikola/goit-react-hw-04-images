@@ -22,12 +22,18 @@ export function App() {
     (async () => {
       setLoading(true);
       const loadedImages = await fetchImages(query, page);
+      if (loadedImages.hits.length === 0) {
+        toast.warn(`Sorry, no matches found for ${query} search`);
+        setLoading(false);
+        return;
+      }
       try {
         setImages(prevImages => [...prevImages, ...loadedImages.hits]);
         setTotalHits(loadedImages.totalHits);
         setLoading(false);
       } catch (error) {
         toast.warn(`${error}`);
+        setLoading(false);
       }
     })();
   }, [query, page]);
