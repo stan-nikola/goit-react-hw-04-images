@@ -15,7 +15,7 @@ import {
 export function GalleryViewer({ currentId, imagesArray }) {
   const [loading, setLoading] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentImage, setCurrentImage] = useState();
+  const [currentImage, setCurrentImage] = useState('');
   const [currentImageAlt, setCurrentImageAlt] = useState('');
 
   const index = imagesArray.findIndex(el => el.id === Number(currentId));
