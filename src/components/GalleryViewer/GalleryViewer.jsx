@@ -1,11 +1,10 @@
-import { Component } from 'react';
+import { useState, useEffect } from 'react';
 import { PuffLoader } from 'react-spinners';
 import { PropTypes } from 'prop-types';
-import { fetchImagesById } from 'services/pixabay-api';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import { override } from 'constants/loading-settings';
+
 import {
   ViewerImg,
   ViewerImgPosition,
@@ -13,102 +12,93 @@ import {
   PrevViewerBtn,
 } from './GalleryViewer.styled';
 
-export class GalleryViewer extends Component {
-  state = {
-    currentId: this.props.currentId,
-    loading: false,
-    currentIdx: 0,
+export function GalleryViewer({ currentId, imagesArray }) {
+  const [loading, setLoading] = useState(false);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentImage, setCurrentImage] = useState('');
+  const [currentImageAlt, setCurrentImageAlt] = useState('');
+
+  const index = imagesArray.findIndex(el => el.id === Number(currentId));
+
+  useEffect(() => {
+    setCurrentIndex(index);
+  }, [index]);
+
+  useEffect(() => {
+    setCurrentImage(imagesArray[currentIndex].largeImageURL);
+    setCurrentImageAlt(imagesArray[currentIndex].tags);
+  }, [imagesArray, currentIndex]);
+
+  useEffect(() => {
+    setLoading(true);
+  }, [currentImage]);
+
+  const slideImage = ({ type, payload }) => {
+    function changeImageData() {
+      setCurrentImage(imagesArray[currentIndex].largeImageURL);
+      setCurrentImageAlt(imagesArray[currentIndex].tags);
+    }
+    switch (type) {
+      case 'nextImage':
+        setCurrentIndex(prevIndex => prevIndex + payload);
+        changeImageData();
+        return;
+
+      case 'prevImage':
+        setCurrentIndex(prevIndex => prevIndex - payload);
+        changeImageData();
+        return;
+
+      default:
+        throw new Error(`Unsupported action type ${type}`);
+    }
   };
 
-  async componentDidMount() {
-    const { currentId } = this.state;
-    const { imagesArray } = this.props;
-
-    const index = imagesArray.findIndex(el => el.id === Number(currentId));
-
-    try {
-      this.setState({ loading: true });
-      const image = await fetchImagesById(currentId);
-
-      this.setState({
-        currentImage: image.hits[0].largeImageURL,
-        loading: false,
-        currentIdx: index,
-      });
-    } catch (error) {
-      toast(`${error}`);
-    }
-  }
-
-  nextImage = async value => {
-    const { imagesArray } = this.props;
-    const { currentIdx } = this.state;
-
-    this.setState({
-      loading: true,
-      currentIdx: currentIdx + value,
-    });
-
-    try {
-      const idxImageId = imagesArray[currentIdx + value];
-      const image = await fetchImagesById(idxImageId.id);
-
-      this.setState({
-        currentImage: image.hits[0].largeImageURL,
-        currentImageAlt: image.hits[0].tags,
-        loading: false,
-      });
-    } catch (error) {
-      toast.warn(error);
-    }
-
-    this.setState({
-      loading: false,
-    });
-  };
-
-  render() {
-    const { imagesArray } = this.props;
-    const { currentIdx, currentImage, currentImageAlt, loading } = this.state;
-
-    return (
+  return (
+    <>
       <>
-        <>
-          <ViewerImgPosition>
-            {currentIdx + 1}/{imagesArray.length}
-          </ViewerImgPosition>
-          <ViewerImg src={currentImage} alt={currentImageAlt} />
-          <NextViewerBtn
-            type="button"
-            aria-label="NextViewerBtn"
-            onClick={() => this.nextImage(+1)}
-            disabled={currentIdx + 1 >= imagesArray.length}
-          >
-            <FiChevronRight />
-          </NextViewerBtn>
-          <PrevViewerBtn
-            type="button"
-            aria-label="PrevViewerBtn"
-            onClick={() => this.nextImage(-1)}
-            disabled={currentIdx < 1}
-          >
-            <FiChevronLeft />
-          </PrevViewerBtn>
-        </>
-
-        <PuffLoader
-          cssOverride={override}
-          size={60}
-          color={'#36d7b7'}
-          loading={loading}
-          speedMultiplier={1.5}
-          aria-label="Loading Spinner"
-          data-testid="loader"
+        <ViewerImgPosition>
+          {currentIndex + 1}/{imagesArray.length}
+        </ViewerImgPosition>
+        <ViewerImg
+          onLoad={() => setLoading(false)}
+          onError={() => toast.warn('Ups,something going wrong :(')}
+          src={currentImage}
+          alt={currentImageAlt}
         />
-        <ToastContainer />
+
+        <NextViewerBtn
+          type="button"
+          aria-label="NextViewerBtn"
+          onClick={() => slideImage({ type: 'nextImage', payload: 1 })}
+          disabled={currentIndex + 1 >= imagesArray.length}
+        >
+          <FiChevronRight />
+        </NextViewerBtn>
+        <PrevViewerBtn
+          type="button"
+          aria-label="PrevViewerBtn"
+          onClick={() => slideImage({ type: 'prevImage', payload: 1 })}
+          disabled={currentIndex < 1}
+        >
+          <FiChevronLeft />
+        </PrevViewerBtn>
       </>
-    );
-  }
+
+      <PuffLoader
+        cssOverride={override}
+        size={60}
+        color={'#36d7b7'}
+        loading={loading}
+        speedMultiplier={1.5}
+        aria-label="Loading Spinner"
+        data-testid="loader"
+      />
+      <ToastContainer />
+    </>
+  );
 }
 
-GalleryViewer.propTypes = { imagesArray: PropTypes.array.isRequired };
+GalleryViewer.propTypes = {
+  imagesArray: PropTypes.array.isRequired,
+};

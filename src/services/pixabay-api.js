@@ -17,8 +17,3 @@ export const fetchImages = async (query, page) => {
   }
   return response.data;
 };
-export const fetchImagesById = async id => {
-  const response = await axios(`/?key=${API_KEY}&id=${id}`, config);
-
-  return response.data;
-};

@@ -7,6 +7,7 @@ export const Backdrop = styled.div`
   top: 0;
   left: 0;
   backdrop-filter: blur(3px);
+
   background-color: #000000d5;
 `;
 
