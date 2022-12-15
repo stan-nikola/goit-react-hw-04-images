@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Header,SearchButton,SearchInput,Form } from './SearchBar.styled';
 import { BiSearchAlt2 } from 'react-icons/bi';
 
-export function Searchbar({ onSubmit }) {
+export function SearchBar({ onSubmit }) {
   const [query, setQuery] = useState('');
 
   const handleChange = e => {
