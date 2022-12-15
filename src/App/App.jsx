@@ -50,10 +50,12 @@ export function App() {
       toast.success(`${handleQuery} already finned`);
       return;
     } else {
+      setPage(1);
       setImages([]);
     }
     setQuery(handleQuery);
   };
+
   const loadMore = () => {
     setPage(prevPage => prevPage + 1);
     setLoading(true);
