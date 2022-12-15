@@ -1,7 +1,7 @@
 import { PropagateLoader } from 'react-spinners';
 import { useState, useEffect } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import { SearchBar } from '../components/SearchBar/SearchBar';
+import { SearchBar } from 'components/SearchBar/SearchBar';
 import { ImageGallery } from '../components/ImageGallery/ImageGallery';
 import { fetchImages } from 'services/pixabay-api';
 import { override } from 'constants/loading-settings';
