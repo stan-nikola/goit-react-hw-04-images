@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { Header, Form, SearchInput, SearchButton } from './Searchbar.styled';
+import { Header,SearchButton,SearchInput,Form } from './SearchBar.styled';
 import { BiSearchAlt2 } from 'react-icons/bi';
 
-export function SearchBar({ onSubmit }) {
+export function Searchbar({ onSubmit }) {
   const [query, setQuery] = useState('');
 
   const handleChange = e => {
@@ -37,7 +37,7 @@ export function SearchBar({ onSubmit }) {
   );
 }
 
-SearchBar.propTypes = {
+Searchbar.propTypes = {
   onSubmit: PropTypes.func.isRequired,
 };
 
